@@ -3,6 +3,7 @@ class Game
     readonly Graphics graphs = new();
     readonly Status status = new();
     readonly HumanPlayer player1 = new();
+    // TODO: PvP
     readonly HumanPlayer player2 = new();
     readonly ComputerPlayer computer1 = new();
     readonly ComputerPlayer computer2 = new();
@@ -10,6 +11,8 @@ class Game
     byte mode;
 
     public int consoleTextPosition = 6;
+    // TODO: next game below 
+    public int consoleBoardPosiotion = 6;
     Random rnd = new();
 
     public void InitGame()
@@ -66,6 +69,7 @@ class Game
             }
             else if (mode == 2)
             {
+                // TODO computers names - might require changes in turn logic
                 computer2.currentChoice = 'X';
                 Console.SetCursorPosition(23, consoleTextPosition++);
                 Graphics.DelayWriting(" Enjoy the show!  ", 20);
@@ -146,15 +150,9 @@ class Game
                 }
                 else ComputerMove(status.gameStatus, !isXTurn);
             }
-
-
         }
-
     }
 
- 
-    // if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
-    // note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRST ONE!) if the left one is true
 
     public void PlayerMove(char[] gameStatus)
     {
@@ -300,6 +298,7 @@ class Game
         }
     }
 
-
-
 }
+
+// if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
+// note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRST ONE!) if the left one is true
