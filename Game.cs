@@ -1,11 +1,11 @@
 class Game
 {
     readonly Graphics graphs = new();
-    readonly Status status = new ();
-    readonly Player player1 = new ();
-    readonly Player player2 = new ();
+    readonly Status status = new();
+    readonly Player player1 = new();
+    readonly Player player2 = new();
     readonly Computer computer1 = new();
-    readonly Computer computer2 = new ();
+    readonly Computer computer2 = new();
 
     byte mode;
 
@@ -37,13 +37,16 @@ class Game
             if (mode == 1)
             {
                 Console.SetCursorPosition(23, consoleTextPosition++);
+                Graphics.DelayWriting(" What's your name?  ", 20);
+                player1.ChangeName(Console.ReadLine());
+                Console.SetCursorPosition(23, consoleTextPosition++);
                 Graphics.DelayWriting(" Play as X or O?  ", 20);
                 string playerChoice = Console.ReadLine();
                 if (playerChoice == "X" || playerChoice == "x")
                 {
                     player1.currentChoice = 'X';
                     Console.SetCursorPosition(23, consoleTextPosition++);
-                    Graphics.DelayWriting(" You will play as X \n", 20);
+                    Graphics.DelayWriting(" Great! " + player1.name + " will play as 'X'", 20);
                     break;
                 }
                 if (playerChoice == "O" || playerChoice == "o")
@@ -51,7 +54,7 @@ class Game
                     player1.currentChoice = 'O';
                     computer1.currentChoice = 'X';
                     Console.SetCursorPosition(23, consoleTextPosition++);
-                    Graphics.DelayWriting(" You will play as O\n", 20);
+                    Graphics.DelayWriting(" Great! " + player1.name + " will play as 'O'", 20);
                     break;
                 }
                 else
