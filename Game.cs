@@ -2,10 +2,10 @@ class Game
 {
     readonly Graphics graphs = new();
     readonly Status status = new();
-    readonly Player player1 = new();
-    readonly Player player2 = new();
-    readonly Computer computer1 = new();
-    readonly Computer computer2 = new();
+    readonly HumanPlayer player1 = new();
+    readonly HumanPlayer player2 = new();
+    readonly ComputerPlayer computer1 = new();
+    readonly ComputerPlayer computer2 = new();
 
     byte mode;
 
@@ -102,11 +102,15 @@ class Game
 
     public void Computer1Move(char[] gameStatus)
     {
+        if (status.isGameOver)
+        {
+            status.GameFinished();
+            return;
+        }
+
         if (!status.isGameOver)
         {
             Console.SetCursorPosition(23, consoleTextPosition++);
-            Graphics.DelayWriting(" Computer is thinking", 35);
-            Graphics.DelayWriting("...", 200);
             List<int> emptyFields = new List<int>();
             for (int i = 0; i < gameStatus.Length; i++)
             {
@@ -118,9 +122,12 @@ class Game
             if (emptyFields.Count == 0)
             {
                 GameOver();
+                return;
             }
             else
             {
+                Graphics.DelayWriting(" Computer is thinking", 5);
+                Graphics.DelayWriting("...", 200);
                 status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer1.currentChoice;
                 Console.SetCursorPosition(0, 6);
                 Console.WriteLine(graphs.PrintBoard(status.gameStatus));
@@ -139,11 +146,15 @@ class Game
 
     public void Computer2Move(char[] gameStatus)
     {
+        if (status.isGameOver)
+        {
+            status.GameFinished();
+            return;
+        }
+
         if (!status.isGameOver)
         {
             Console.SetCursorPosition(23, consoleTextPosition++);
-            Graphics.DelayWriting(" Computer is thinking", 35);
-            Graphics.DelayWriting("...", 200);
             List<int> emptyFields = new List<int>();
             for (int i = 0; i < gameStatus.Length; i++)
             {
@@ -155,9 +166,12 @@ class Game
             if (emptyFields.Count == 0)
             {
                 GameOver();
+                return;
             }
             else
             {
+                Graphics.DelayWriting(" Computer is thinking", 35);
+                Graphics.DelayWriting("...", 200);
                 status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer2.currentChoice;
                 Console.SetCursorPosition(0, 6);
                 Console.WriteLine(graphs.PrintBoard(status.gameStatus));
@@ -174,6 +188,12 @@ class Game
 
     public void PlayerMove(char[] gameStatus)
     {
+        if (status.isGameOver)
+        {
+            status.GameFinished();
+            return;
+        }
+
         if (!status.isGameOver)
         {
             while (true)
@@ -197,9 +217,6 @@ class Game
                     Console.SetCursorPosition(23, consoleTextPosition++);
                     Console.WriteLine(" Wrong move. Try again");
                 }
-                // would be nice to do             if (string.Equals(move, "A1", CaseInsensitiveComparer))
-                //                                   gameStatus[0] = choice;
-                // but dunno how for now
             }
             Console.SetCursorPosition(0, 6);
             Console.WriteLine(graphs.PrintBoard(status.gameStatus));

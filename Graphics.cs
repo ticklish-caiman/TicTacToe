@@ -59,7 +59,7 @@ class Graphics
         {
             Console.Write(text[i]);
             // TODO: uncomment after debugging!
-            System.Threading.Thread.Sleep(delay);
+            //System.Threading.Thread.Sleep(delay);
         }
     }
 
@@ -72,7 +72,7 @@ class Graphics
             if (rnd.NextDouble() < 0.1)
             {
                 // TODO: uncomment after debugging!
-                System.Threading.Thread.Sleep(delay);
+                //System.Threading.Thread.Sleep(delay);
             }
         }
     }
@@ -80,10 +80,10 @@ class Graphics
     public static void PrintWelcome()
     {
         Console.Write("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n");
-        DelayWriting("■■■■■■■■■■■■■» ", 1);
-        DelayWriting("Welcome to Tic Tac Toe!", 5);
-        DelayWriting(" «■■■■■■■■■■■■■■\n", 1);
-        DelayWriting("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n", 1);
+        DelayRandom("■■■■■■■■■■■■■» ", 5);
+        DelayWriting("Welcome to Tic Tac Toe!", 50);
+        DelayRandom(" «■■■■■■■■■■■■■■\n", 5);
+        DelayRandom("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n", 5);
     }
 
 }
