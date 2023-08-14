@@ -62,7 +62,8 @@ class Graphics
         for (int i = 0; i < text.Length; i++)
         {
             Console.Write(text[i]);
-            System.Threading.Thread.Sleep(delay);
+            // TODO: uncomment after debugging!
+            //System.Threading.Thread.Sleep(delay);
         }
     }
 
@@ -74,7 +75,8 @@ class Graphics
             Console.Write(text[i]);
             if (rnd.NextDouble() < 0.2)
             {
-                System.Threading.Thread.Sleep(delay);
+                // TODO: uncomment after debugging!
+                //System.Threading.Thread.Sleep(delay);
             }
         }
     }
