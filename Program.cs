@@ -1,11 +1,7 @@
 ﻿bool GameIsOn = true;
 while (GameIsOn)
 {
-    Console.Write("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n");
-    Graphics.DelayWriting("■■■■■■■■■■■■■» ", 1);
-    Graphics.DelayWriting("Welcome to Tic Tac Toe!", 5);
-    Graphics.DelayWriting(" «■■■■■■■■■■■■■■\n", 1);
-    Graphics.DelayWriting("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n", 1);
+    Graphics.PrintWelcome();
     Game game1 = new();
     game1.InitGame();
     Console.SetCursorPosition(21, game1.consoleTextPosition + 2);

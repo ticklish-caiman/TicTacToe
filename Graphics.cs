@@ -66,7 +66,7 @@ class Graphics
         }
     }
 
-    public static void DelayRandomLines(string text, int delay)
+    public static void DelayRandom(string text, int delay)
     {
         Random rnd = new Random();
         for (int i = 0; i < text.Length; i++)
@@ -77,6 +77,15 @@ class Graphics
                 System.Threading.Thread.Sleep(delay);
             }
         }
+    }
+
+    public static void PrintWelcome()
+    {
+        Console.Write("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n");
+        DelayWriting("■■■■■■■■■■■■■» ", 1);
+        DelayWriting("Welcome to Tic Tac Toe!", 5);
+        DelayWriting(" «■■■■■■■■■■■■■■\n", 1);
+        DelayWriting("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\n", 1);
     }
 
 }

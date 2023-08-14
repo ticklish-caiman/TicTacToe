@@ -14,7 +14,7 @@ class Game
             Graphics.DelayWriting("  Let's begin!\n", 30);
             Graphics.DelayWriting("  O's go first!\n", 25);
             Console.SetCursorPosition(0, 6);
-            Graphics.DelayRandomLines(graphs.EmptyBoard(), 1);
+            Graphics.DelayRandom(graphs.EmptyBoard(), 1);
             Console.SetCursorPosition(23, consoleTextPosition++);
             Graphics.DelayWriting(" Play as X or O?  ", 20);
             string playerChoice = Console.ReadLine();
