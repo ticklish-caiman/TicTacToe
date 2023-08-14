@@ -89,15 +89,17 @@ class Game
                 Console.SetCursorPosition(23, consoleTextPosition++);
                 Graphics.DelayWriting(" Your turn! Choose (e.g. A1 or C3):", 25);
                 string move = Console.ReadLine();
-                if (move == "A1" || move == "a1" && gameStatus[0] == '-') { gameStatus[0] = choice; break; }
-                if (move == "B1" || move == "b1" && gameStatus[1] == '-') { gameStatus[1] = choice; break; }
-                if (move == "C1" || move == "c1" && gameStatus[2] == '-') { gameStatus[2] = choice; break; }
-                if (move == "A2" || move == "a2" && gameStatus[3] == '-') { gameStatus[3] = choice; break; }
-                if (move == "B2" || move == "b2" && gameStatus[4] == '-') { gameStatus[4] = choice; break; }
-                if (move == "C2" || move == "c2" && gameStatus[5] == '-') { gameStatus[5] = choice; break; }
-                if (move == "A3" || move == "a3" && gameStatus[6] == '-') { gameStatus[6] = choice; break; }
-                if (move == "B3" || move == "b3" && gameStatus[7] == '-') { gameStatus[7] = choice; break; }
-                if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
+                // if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
+                // note that above statement uses || that ignores all the other statements on the right if the left one is true
+                if (gameStatus[0] == '-' && move == "A1" || move == "a1") { gameStatus[0] = choice; break; }
+                if (gameStatus[1] == '-' && move == "B1" || move == "b1") { gameStatus[1] = choice; break; }
+                if (gameStatus[2] == '-' && move == "C1" || move == "c1") { gameStatus[2] = choice; break; }
+                if (gameStatus[3] == '-' && move == "A2" || move == "a2") { gameStatus[3] = choice; break; }
+                if (gameStatus[4] == '-' && move == "B2" || move == "b2") { gameStatus[4] = choice; break; }
+                if (gameStatus[5] == '-' && move == "C2" || move == "c2") { gameStatus[5] = choice; break; }
+                if (gameStatus[6] == '-' && move == "A3" || move == "a3") { gameStatus[6] = choice; break; }
+                if (gameStatus[7] == '-' && move == "B3" || move == "b3") { gameStatus[7] = choice; break; }
+                if (gameStatus[8] == '-' && move == "C3" || move == "c3") { gameStatus[8] = choice; break; }
                 else
                 {
                     Console.SetCursorPosition(23, consoleTextPosition++);
