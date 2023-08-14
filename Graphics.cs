@@ -1,9 +1,5 @@
 class Graphics
 {
-    //string element0 = "   A     B     C\n";
-    //string element1 = "     |     |    \n";
-    //string element2 = "_____|_____|_____\n";
-
     char[] element0 = { ' ', ' ', ' ', 'A', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', 'C', };
     char[] element1 = { ' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ' };
     char[] element2 = { '_', '_', '_', '_', '_', '|', '_', '_', '_', '_', '_', '|', '_', '_', '_', '_', '_' };
@@ -63,7 +59,7 @@ class Graphics
         {
             Console.Write(text[i]);
             // TODO: uncomment after debugging!
-            //System.Threading.Thread.Sleep(delay);
+            System.Threading.Thread.Sleep(delay);
         }
     }
 
@@ -73,10 +69,10 @@ class Graphics
         for (int i = 0; i < text.Length; i++)
         {
             Console.Write(text[i]);
-            if (rnd.NextDouble() < 0.2)
+            if (rnd.NextDouble() < 0.1)
             {
                 // TODO: uncomment after debugging!
-                //System.Threading.Thread.Sleep(delay);
+                System.Threading.Thread.Sleep(delay);
             }
         }
     }

@@ -1,26 +1,38 @@
 class Game
 {
-    bool isGameOver = false;
-    char[] gameStatus = { '-', '-', '-', '-', '-', '-', '-', '-', '-' };
-    char choice = 'X';
-    char computerChoice = 'O';
-    char secondComputerChoice = 'X';
-    byte mode = 1;
+    readonly Graphics graphs = new();
+    readonly Status status = new ();
+    readonly Player player1 = new ();
+    readonly Player player2 = new ();
+    readonly Computer computer1 = new();
+    readonly Computer computer2 = new ();
+
+    byte mode;
+
     public int consoleTextPosition = 6;
     Random rnd = new();
-    readonly Graphics graphs = new();
+
     public void InitGame()
     {
         while (true)
         {
+            status.Init();
             Graphics.DelayWriting("  Let's begin!\n", 20);
-
-
             Graphics.DelayWriting("  O's go first!\n", 25);
             Console.SetCursorPosition(0, 6);
             Graphics.DelayRandom(graphs.EmptyBoard(), 1);
             Console.SetCursorPosition(23, consoleTextPosition++);
-            Graphics.DelayWriting("  Choose mode: 1) PvC, 2) CvC\n 2", 20);
+            Graphics.DelayWriting("  Choose mode: 1) PvC, 2) CvC ", 20);
+            string? modeTmp = Console.ReadLine();
+            try
+            {
+                mode = byte.Parse(modeTmp);
+            }
+            catch (FormatException)
+            {
+                Console.SetCursorPosition(23, consoleTextPosition++);
+                Console.WriteLine("Wrong value!");
+            }
 
             if (mode == 1)
             {
@@ -29,15 +41,15 @@ class Game
                 string playerChoice = Console.ReadLine();
                 if (playerChoice == "X" || playerChoice == "x")
                 {
-                    choice = 'X';
-                    computerChoice = 'O';
+                    player1.currentChoice = 'X';
                     Console.SetCursorPosition(23, consoleTextPosition++);
                     Graphics.DelayWriting(" You will play as X \n", 20);
                     break;
                 }
                 if (playerChoice == "O" || playerChoice == "o")
                 {
-                    choice = 'O';
+                    player1.currentChoice = 'O';
+                    computer1.currentChoice = 'X';
                     Console.SetCursorPosition(23, consoleTextPosition++);
                     Graphics.DelayWriting(" You will play as O\n", 20);
                     break;
@@ -51,14 +63,17 @@ class Game
             }
             else if (mode == 2)
             {
+                computer2.currentChoice = 'X';
                 Console.SetCursorPosition(23, consoleTextPosition++);
                 Graphics.DelayWriting(" Enjoy the show!  ", 20);
                 break;
             }
-
-
+            else
+            {
+                Console.SetCursorPosition(23, consoleTextPosition++);
+                Console.WriteLine("Nonexisting choice!");
+            }
         }
-
         StartGame();
     }
 
@@ -66,25 +81,25 @@ class Game
     {
         if (mode == 1)
         {
-            if (choice == 'O')
+            if (player1.currentChoice == 'O')
             {
-                PlayerMove(gameStatus);
+                PlayerMove(status.gameStatus);
             }
             else
             {
-                ComputerMove(gameStatus);
+                Computer1Move(status.gameStatus);
             }
         }
         else if (mode == 2)
         {
-            ComputerMove(gameStatus);
+            Computer1Move(status.gameStatus);
         }
 
     }
 
-    public void ComputerMove(char[] gameStatus)
+    public void Computer1Move(char[] gameStatus)
     {
-        if (!isGameOver)
+        if (!status.isGameOver)
         {
             Console.SetCursorPosition(23, consoleTextPosition++);
             Graphics.DelayWriting(" Computer is thinking", 35);
@@ -103,15 +118,15 @@ class Game
             }
             else
             {
-                gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computerChoice;
+                status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer1.currentChoice;
                 Console.SetCursorPosition(0, 6);
-                Console.WriteLine(graphs.PrintBoard(gameStatus));
-                CheckForWinner(gameStatus);
+                Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+                CheckForWinner(status.gameStatus);
                 if (mode == 1)
                 {
-                    PlayerMove(gameStatus);
+                    PlayerMove(status.gameStatus);
                 }
-                else SecondComputerMove(gameStatus);
+                else Computer2Move(status.gameStatus);
             }
 
 
@@ -119,9 +134,9 @@ class Game
 
     }
 
-    public void SecondComputerMove(char[] gameStatus)
+    public void Computer2Move(char[] gameStatus)
     {
-        if (!isGameOver)
+        if (!status.isGameOver)
         {
             Console.SetCursorPosition(23, consoleTextPosition++);
             Graphics.DelayWriting(" Computer is thinking", 35);
@@ -140,37 +155,40 @@ class Game
             }
             else
             {
-                gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = secondComputerChoice;
+                status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer2.currentChoice;
                 Console.SetCursorPosition(0, 6);
-                Console.WriteLine(graphs.PrintBoard(gameStatus));
-                CheckForWinner(gameStatus);
-                ComputerMove(gameStatus);
+                Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+                CheckForWinner(status.gameStatus);
+                Computer1Move(status.gameStatus);
             }
 
         }
 
     }
+
+    // if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
+    // note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRS ONE!) if the left one is true
 
     public void PlayerMove(char[] gameStatus)
     {
-        if (!isGameOver)
+        if (!status.isGameOver)
         {
             while (true)
             {
                 Console.SetCursorPosition(23, consoleTextPosition++);
                 Graphics.DelayWriting(" Your turn! Choose (e.g. A1 or C3):", 25);
-                string move = Console.ReadLine();
-                // if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
-                // note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRS ONE!) if the left one is true
-                if (gameStatus[0] == '-' && move == "A1" || move == "a1") { gameStatus[0] = choice; break; }
-                if (gameStatus[1] == '-' && move == "B1" || move == "b1") { gameStatus[1] = choice; break; }
-                if (gameStatus[2] == '-' && move == "C1" || move == "c1") { gameStatus[2] = choice; break; }
-                if (gameStatus[3] == '-' && move == "A2" || move == "a2") { gameStatus[3] = choice; break; }
-                if (gameStatus[4] == '-' && move == "B2" || move == "b2") { gameStatus[4] = choice; break; }
-                if (gameStatus[5] == '-' && move == "C2" || move == "c2") { gameStatus[5] = choice; break; }
-                if (gameStatus[6] == '-' && move == "A3" || move == "a3") { gameStatus[6] = choice; break; }
-                if (gameStatus[7] == '-' && move == "B3" || move == "b3") { gameStatus[7] = choice; break; }
-                if (gameStatus[8] == '-' && move == "C3" || move == "c3") { gameStatus[8] = choice; break; }
+                string? move = Console.ReadLine();
+                move = move?.ToUpper();
+
+                if (gameStatus[0] == '-' && move == "A1") { status.gameStatus[0] = player1.currentChoice; break; }
+                if (gameStatus[1] == '-' && move == "B1") { status.gameStatus[1] = player1.currentChoice; break; }
+                if (gameStatus[2] == '-' && move == "C1") { status.gameStatus[2] = player1.currentChoice; break; }
+                if (gameStatus[3] == '-' && move == "A2") { status.gameStatus[3] = player1.currentChoice; break; }
+                if (gameStatus[4] == '-' && move == "B2") { status.gameStatus[4] = player1.currentChoice; break; }
+                if (gameStatus[5] == '-' && move == "C2") { status.gameStatus[5] = player1.currentChoice; break; }
+                if (gameStatus[6] == '-' && move == "A3") { status.gameStatus[6] = player1.currentChoice; break; }
+                if (gameStatus[7] == '-' && move == "B3") { status.gameStatus[7] = player1.currentChoice; break; }
+                if (gameStatus[8] == '-' && move == "C3") { status.gameStatus[8] = player1.currentChoice; break; }
                 else
                 {
                     Console.SetCursorPosition(23, consoleTextPosition++);
@@ -181,17 +199,17 @@ class Game
                 // but dunno how for now
             }
             Console.SetCursorPosition(0, 6);
-            Console.WriteLine(graphs.PrintBoard(gameStatus));
-            CheckForWinner(gameStatus);
-            ComputerMove(gameStatus);
+            Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+            CheckForWinner(status.gameStatus);
+            Computer1Move(status.gameStatus);
         }
-
     }
 
     public void GameOver()
     {
         Console.SetCursorPosition(23, consoleTextPosition += 2);
         Console.WriteLine("  No more moves. Draw.");
+        status.GameFinished();
     }
 
 
@@ -207,7 +225,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                  - - -
@@ -218,7 +236,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[3] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                  - - -
@@ -229,7 +247,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[6] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                 X - -
@@ -240,7 +258,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                 - X -
@@ -251,7 +269,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[1] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                 - - X
@@ -261,8 +279,8 @@ class Game
         if (gameStatus[2] == gameStatus[5] && gameStatus[5] == gameStatus[8] && gameStatus[2] != '-')
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
-            Console.WriteLine("  " + gameStatus[3] + " wins!");
-            isGameOver = true;
+            Console.WriteLine("  " + gameStatus[2] + " wins!");
+            status.isGameOver = true;
         }
         /*   
                 X - -
@@ -273,7 +291,7 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
         /*   
                 - - X
@@ -284,9 +302,9 @@ class Game
         {
             Console.SetCursorPosition(23, consoleTextPosition += 1);
             Console.WriteLine("  " + gameStatus[2] + " wins!");
-            isGameOver = true;
+            status.isGameOver = true;
         }
-        if (!gameStatus.Contains('-') && !isGameOver)
+        if (!gameStatus.Contains('-') && !status.isGameOver)
         {
             GameOver();
         }
