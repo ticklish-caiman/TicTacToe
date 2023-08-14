@@ -3,6 +3,7 @@ class Status
     public int gamesPlayed;
     public char[] gameStatus = new char[9];
     public bool isGameOver = false;
+    public bool isXTurn = false;
 
     public void Init()
     {

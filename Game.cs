@@ -90,17 +90,17 @@ class Game
             }
             else
             {
-                Computer1Move(status.gameStatus);
+                ComputerMove(status.gameStatus, false);
             }
         }
         else if (mode == 2)
         {
-            Computer1Move(status.gameStatus);
+            ComputerMove(status.gameStatus, false);
         }
 
     }
 
-    public void Computer1Move(char[] gameStatus)
+    public void ComputerMove(char[] gameStatus, bool isXTurn)
     {
         if (status.isGameOver)
         {
@@ -128,7 +128,15 @@ class Game
             {
                 Graphics.DelayWriting(" Computer is thinking", 5);
                 Graphics.DelayWriting("...", 200);
-                status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer1.currentChoice;
+                if (isXTurn)
+                {
+                    status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = 'X';
+                }
+                else
+                {
+                    status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = 'O';
+                }
+
                 Console.SetCursorPosition(0, 6);
                 Console.WriteLine(graphs.PrintBoard(status.gameStatus));
                 CheckForWinner(status.gameStatus);
@@ -136,7 +144,7 @@ class Game
                 {
                     PlayerMove(status.gameStatus);
                 }
-                else Computer2Move(status.gameStatus);
+                else ComputerMove(status.gameStatus, !isXTurn);
             }
 
 
@@ -144,47 +152,9 @@ class Game
 
     }
 
-    public void Computer2Move(char[] gameStatus)
-    {
-        if (status.isGameOver)
-        {
-            status.GameFinished();
-            return;
-        }
-
-        if (!status.isGameOver)
-        {
-            Console.SetCursorPosition(23, consoleTextPosition++);
-            List<int> emptyFields = new List<int>();
-            for (int i = 0; i < gameStatus.Length; i++)
-            {
-                if (gameStatus[i] == '-')
-                {
-                    emptyFields.Add(i);
-                }
-            };
-            if (emptyFields.Count == 0)
-            {
-                GameOver();
-                return;
-            }
-            else
-            {
-                Graphics.DelayWriting(" Computer is thinking", 35);
-                Graphics.DelayWriting("...", 200);
-                status.gameStatus[emptyFields.ElementAt(rnd.Next(0, emptyFields.Count))] = computer2.currentChoice;
-                Console.SetCursorPosition(0, 6);
-                Console.WriteLine(graphs.PrintBoard(status.gameStatus));
-                CheckForWinner(status.gameStatus);
-                Computer1Move(status.gameStatus);
-            }
-
-        }
-
-    }
-
+ 
     // if (move == "C3" || move == "c3" && gameStatus[8] == '-') { gameStatus[8] = choice; break; }
-    // note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRS ONE!) if the left one is true
+    // note that above statement uses || that ignores all the other statements on the right (NOT ONLY THE THE FIRST ONE!) if the left one is true
 
     public void PlayerMove(char[] gameStatus)
     {
@@ -221,7 +191,7 @@ class Game
             Console.SetCursorPosition(0, 6);
             Console.WriteLine(graphs.PrintBoard(status.gameStatus));
             CheckForWinner(status.gameStatus);
-            Computer1Move(status.gameStatus);
+            ComputerMove(status.gameStatus, player1.currentChoice == 'O');
         }
     }
 
