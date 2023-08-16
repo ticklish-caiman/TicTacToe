@@ -4,9 +4,10 @@ class Status
     {
         public static int ConsoleTextPosition = 4;
         public static int ConsoleBoardPosition = 6;
-        public static bool isGameOver = false;
+        public static bool IsGameOver = false;
+        public static int RoundsPlayed = 0;
     }
-    public int gamesPlayed = 0;
+
     public byte movesMade = 0;
     public char[] gameStatus = new char[9];
 
@@ -14,7 +15,6 @@ class Status
 
     public void Init()
     {
-        //gamesPlayed = 0;
         movesMade = 0;
         gameStatus = new char[] { '-', '-', '-', '-', '-', '-', '-', '-', '-' };
     }
@@ -24,16 +24,12 @@ class Status
         gameStatus = status;
     }
 
-    public void GameFinished()
-    {
-        gamesPlayed++;
-    }
-
     public void ResetGlobals()
     {
         Globals.ConsoleTextPosition = 5;
         Globals.ConsoleBoardPosition = 6;
-        Globals.isGameOver = false;
+        Globals.IsGameOver = false;
+        Globals.RoundsPlayed = 0;
     }
 
 

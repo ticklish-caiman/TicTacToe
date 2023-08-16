@@ -3,9 +3,7 @@ using static Status;
 class Game
 {
     readonly Graphics graphs = new();
-    Status status = new();
     Round round = new();
-    // TODO: PvP
     HumanPlayer humanPlayer1 = new();
     ComputerPlayer computerPlayer1 = new();
     HumanPlayer humanPlayer2 = new();
@@ -18,7 +16,7 @@ class Game
 
     Random random = new();
 
-    public void InitGame()
+    public void InitGame(Status status)
     {
         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
         Graphics.DelayWriting("  Let's begin!\n", 20);
@@ -41,7 +39,7 @@ class Game
             if (firstRound)
             {
                 Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
-                Graphics.DelayWriting("  Choose mode: 1) PvC, 2) CvC ", 20);
+                Graphics.DelayWriting("  Choose mode: 1) PvC, 2) CvC 3) PvP ", 20);
                 string? modeTmp = Console.ReadLine();
                 try
                 {
@@ -68,7 +66,7 @@ class Game
                         computerPlayer1.currentChoice = 'O';
                         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                         Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
-                        Graphics.DelayWriting(" | Computer " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
+                        Graphics.DelayWriting(" | " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
                         round.PlayRound(status, humanPlayer1, computerPlayer1, mode);
                     }
                     if (playerChoice == "O")
@@ -77,10 +75,10 @@ class Game
                         computerPlayer1.currentChoice = 'X';
                         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                         Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
-                        Graphics.DelayWriting(" | Computer " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
+                        Graphics.DelayWriting(" | " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
                         round.PlayRound(status, humanPlayer1, computerPlayer1, mode);
                     }
-                    else if (!Globals.isGameOver)
+                    else if (!Globals.IsGameOver)
                     {
                         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                         Graphics.DelayWriting(" Incorrect choice...\n", 15);
@@ -101,10 +99,50 @@ class Game
                     Graphics.DelayWriting(" Enjoy the show!  ", 20);
                     round.PlayRound(status, computerPlayer1, computerPlayer2, mode);
                 }
+
+
+                else if (mode == 3)
+                {
+                    Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                    Graphics.DelayWriting(" What's first player name?  ", 20);
+                    humanPlayer1.ChangeName(Console.ReadLine());
+                    Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                    Graphics.DelayWriting(" What's second player name?  ", 20);
+                    humanPlayer2.ChangeName(Console.ReadLine());
+                    Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                    Graphics.DelayWriting(" First player will as X or O?  ", 20);
+                    string playerChoice = Console.ReadLine();
+                    playerChoice = playerChoice.ToUpper();
+                    if (playerChoice == "X")
+                    {
+                        humanPlayer1.currentChoice = 'X';
+                        humanPlayer2.currentChoice = 'O';
+                        Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                        Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
+                        Graphics.DelayWriting(" | Computer " + humanPlayer2.name + " will play as " + humanPlayer2.currentChoice, 20);
+                        round.PlayRound(status, humanPlayer1, humanPlayer2, mode);
+                    }
+                    if (playerChoice == "O")
+                    {
+                        humanPlayer1.currentChoice = 'O';
+                        humanPlayer2.currentChoice = 'X';
+                        Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                        Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
+                        Graphics.DelayWriting(" | Computer " + humanPlayer2.name + " will play as " + humanPlayer2.currentChoice, 20);
+                        round.PlayRound(status, humanPlayer1, humanPlayer2, mode);
+                    }
+                    else if (!Globals.IsGameOver)
+                    {
+                        Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                        Graphics.DelayWriting(" Incorrect choice...\n", 15);
+                        Globals.ConsoleTextPosition++;
+                    }
+                }
                 else
                 {
                     Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                     Console.WriteLine("Nonexisting choice!");
+                    break;
                 }
             }
             else
@@ -127,8 +165,8 @@ class Game
                 anotherRound = false;
             }
             firstRound = false;
-            Globals.isGameOver = false;
-            Globals.ConsoleBoardPosition += 16;
+            Globals.IsGameOver = false;
+            Globals.ConsoleBoardPosition += Globals.ConsoleTextPosition / Globals.RoundsPlayed;
             Globals.ConsoleTextPosition = Globals.ConsoleBoardPosition;
         }
 

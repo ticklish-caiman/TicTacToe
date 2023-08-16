@@ -5,10 +5,10 @@ while (GameIsOn)
 {
     Graphics.PrintWelcome();
     Game game1 = new();
-    game1.InitGame();
+    game1.InitGame(status);
     Console.SetCursorPosition(21, Globals.ConsoleTextPosition++);
 
-    Graphics.DelayWriting("  Play again? (Y/N)", 10);
+    Graphics.DelayWriting("  Reset game? (Y/N)", 10);
     string choice = Console.ReadLine().ToUpper();
     if (choice == "N") GameIsOn = false;
     Console.Clear();

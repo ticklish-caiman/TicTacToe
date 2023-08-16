@@ -13,8 +13,9 @@ class Round
         {
             while (status.movesMade < 10)
             {
-                if (Globals.isGameOver)
+                if (Globals.IsGameOver)
                 {
+                    Globals.RoundsPlayed++;
                     return status;
                 }
                 if (player1.currentChoice == 'O' && whoseTurn)
@@ -42,7 +43,7 @@ class Round
                     whoseTurn = !whoseTurn;
                 }
             }
-            status.GameFinished();
+            Globals.RoundsPlayed++;
 
         }
         // ----- Computer vs Computer ------
@@ -50,8 +51,9 @@ class Round
         {
             while (status.movesMade < 10)
             {
-                if (Globals.isGameOver)
+                if (Globals.IsGameOver)
                 {
+                    Globals.RoundsPlayed++;
                     return status;
                 }
                 ComputerMove(status, player1);
@@ -61,19 +63,61 @@ class Round
                 CheckForWinner(status.gameStatus);
                 whoseTurn = !whoseTurn;
             }
+            Globals.RoundsPlayed++;
         }
+
+
+        // ----- Player vs Player ------
+        else if (mode == 3)
+        {
+            while (status.movesMade < 10)
+            {
+                if (Globals.IsGameOver)
+                {
+                    Globals.RoundsPlayed++;
+                    return status;
+                }
+                if (player1.currentChoice == 'O' && whoseTurn)
+                {
+                    PlayerMove(status, player1);
+                    Console.SetCursorPosition(0, Globals.ConsoleBoardPosition);
+                    Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+                    CheckForWinner(status.gameStatus);
+                    whoseTurn = !whoseTurn;
+                }
+                if (player1.currentChoice == 'X' && !whoseTurn)
+                {
+                    PlayerMove(status, player1);
+                    Console.SetCursorPosition(0, Globals.ConsoleBoardPosition);
+                    Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+                    CheckForWinner(status.gameStatus);
+                    whoseTurn = !whoseTurn;
+                }
+                else
+                {
+                    PlayerMove(status, player2);
+                    Console.SetCursorPosition(0, Globals.ConsoleBoardPosition);
+                    Console.WriteLine(graphs.PrintBoard(status.gameStatus));
+                    CheckForWinner(status.gameStatus);
+                    whoseTurn = !whoseTurn;
+                }
+            }
+            Globals.RoundsPlayed++;
+
+        }
+
         return status;
     }
 
     public static void PlayerMove(Status status, Player player)
     {
 
-        if (!Globals.isGameOver)
+        if (!Globals.IsGameOver)
         {
             while (true)
             {
                 Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
-                Graphics.DelayWriting(" Your turn! Choose (e.g. A1 or C3):", 25);
+                Graphics.DelayWriting(player.name + "'s turn! Choose (e.g. A1 or C3):", 25);
                 string? move = Console.ReadLine();
                 move = move?.ToUpper();
 
@@ -100,7 +144,7 @@ class Round
     public void ComputerMove(Status status, Player player)
     {
 
-        if (!Globals.isGameOver)
+        if (!Globals.IsGameOver)
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             List<int> emptyFields = new();
@@ -139,7 +183,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -151,7 +195,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[3] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -163,7 +207,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[6] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -175,7 +219,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -187,7 +231,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[1] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -199,7 +243,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[2] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -211,7 +255,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[0] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         /*   
@@ -223,7 +267,7 @@ class Round
         {
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("  " + gameStatus[2] + " wins!");
-            Globals.isGameOver = true;
+            Globals.IsGameOver = true;
             return;
         }
         if (!gameStatus.Contains('-'))
@@ -237,7 +281,7 @@ class Round
     {
         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
         Console.WriteLine("  No more moves. Draw.");
-        Globals.isGameOver = true;
+        Globals.IsGameOver = true;
 
     }
 }
