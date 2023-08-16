@@ -20,12 +20,22 @@ class Game
 
     public void InitGame()
     {
+        Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+        Graphics.DelayWriting("  Let's begin!\n", 20);
         while (anotherRound)
         {
             status.Init();
+            Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+            if (random.NextDouble() >= 0.5)
+            {
+                Graphics.DelayWriting("  O's go first!\n", 25);
+            }
+            else
+            {
+                Graphics.DelayWriting("  X's go first!\n", 25);
+                round.whoseTurn = false;
+            }
 
-            Graphics.DelayWriting("  Let's begin!\n", 20);
-            Graphics.DelayWriting("  O's go first!\n", 25);
             Console.SetCursorPosition(0, Globals.ConsoleBoardPosition);
             Graphics.DelayRandom(graphs.EmptyBoard(), 1);
             if (firstRound)
@@ -60,7 +70,6 @@ class Game
                         Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
                         Graphics.DelayWriting(" | Computer " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
                         round.PlayRound(status, humanPlayer1, computerPlayer1, mode);
-                        break;
                     }
                     if (playerChoice == "O")
                     {
@@ -70,9 +79,8 @@ class Game
                         Graphics.DelayWriting(" Great! " + humanPlayer1.name + " will play as " + humanPlayer1.currentChoice, 20);
                         Graphics.DelayWriting(" | Computer " + computerPlayer1.name + " will play as " + computerPlayer1.currentChoice, 20);
                         round.PlayRound(status, humanPlayer1, computerPlayer1, mode);
-                        break;
                     }
-                    else
+                    else if (!Globals.isGameOver)
                     {
                         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                         Graphics.DelayWriting(" Incorrect choice...\n", 15);
@@ -92,7 +100,6 @@ class Game
                     Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
                     Graphics.DelayWriting(" Enjoy the show!  ", 20);
                     round.PlayRound(status, computerPlayer1, computerPlayer2, mode);
-                    break;
                 }
                 else
                 {
@@ -111,7 +118,6 @@ class Game
                     round.PlayRound(status, computerPlayer1, computerPlayer2, mode);
                 }
             }
-
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             Console.WriteLine("Play another round? (Y/N)");
             string choice = Console.ReadLine();
@@ -123,9 +129,9 @@ class Game
             firstRound = false;
             Globals.isGameOver = false;
             Globals.ConsoleBoardPosition += 16;
-            Globals.ConsoleTextPosition += 2;
-
+            Globals.ConsoleTextPosition = Globals.ConsoleBoardPosition;
         }
+
     }
 }
 

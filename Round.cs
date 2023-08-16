@@ -4,7 +4,7 @@ using static Status;
 class Round
 {
     readonly Random random = new();
-    bool whoseTurn = true; // true = O, false = X
+    public bool whoseTurn = true; // true = O, false = X
     readonly Graphics graphs = new();
     public Status PlayRound(Status status, Player player1, Player player2, byte mode)
     {
