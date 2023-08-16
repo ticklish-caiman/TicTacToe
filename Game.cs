@@ -19,18 +19,18 @@ class Game
     public void InitGame(Status status)
     {
         Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
-        Graphics.DelayWriting("  Let's begin!\n", 20);
+        Graphics.DelayWriting("Let's begin!\n", 20);
         while (anotherRound)
         {
             status.Init();
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
             if (random.NextDouble() >= 0.5)
             {
-                Graphics.DelayWriting("  O's go first!\n", 25);
+                Graphics.DelayWriting("O's go first!\n", 25);
             }
             else
             {
-                Graphics.DelayWriting("  X's go first!\n", 25);
+                Graphics.DelayWriting("X's go first!\n", 25);
                 round.whoseTurn = false;
             }
 
@@ -39,7 +39,9 @@ class Game
             if (firstRound)
             {
                 Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
-                Graphics.DelayWriting("  Choose mode: 1) PvC, 2) CvC 3) PvP ", 20);
+                Graphics.DelayWriting("Choose mode: 1) PvC, 2) CvC 3) PvP ", 20);
+                Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);
+                Graphics.DelayWriting("1) Player vs Computer, 2) Computer vs Computer 3) Player vs Player ", 20);
                 string? modeTmp = Console.ReadLine();
                 try
                 {
@@ -154,6 +156,10 @@ class Game
                 if (mode == 2)
                 {
                     round.PlayRound(status, computerPlayer1, computerPlayer2, mode);
+                }
+                if (mode == 3)
+                {
+                    round.PlayRound(status, humanPlayer1, humanPlayer2, mode);
                 }
             }
             Console.SetCursorPosition(23, Globals.ConsoleTextPosition++);

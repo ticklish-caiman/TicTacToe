@@ -3,7 +3,7 @@ class Status
     public static class Globals
     {
         public static int ConsoleTextPosition = 4;
-        public static int ConsoleBoardPosition = 6;
+        public static int ConsoleBoardPosition = 7;
         public static bool IsGameOver = false;
         public static int RoundsPlayed = 0;
     }
